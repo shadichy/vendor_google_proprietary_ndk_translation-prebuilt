@@ -28,6 +28,7 @@ jobs:
         run: bash module.sh
 
       - name: Build module
+        id: build_module
         uses: Ananda-Aropa/android_module_actions@ksu_headless
         with:
           id: ${{ env.MODULE }}
@@ -41,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.MODULE }}.zip
-          path: ${{ env.MODULE }}.zip
+          path: ${{ steps.build_module.outputs.artifact_path }}
 
   release:
     name: Release
