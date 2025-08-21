@@ -10,6 +10,9 @@ env:
   REPO: ${{ github.repository }}
   BRANCH: ${{ github.ref_name }}
   PAT: ${{ secrets.RELEASE_TOKEN }}
+  MODULE: native-bridge
+  MODULE_NAME: libndk_translation
+  MODULE_DESCRIPTION: Android Native Bridge using Google's proprietary ndk_translation for Intel/AMD x86 CPUs
 
 jobs:
   build:
@@ -27,18 +30,18 @@ jobs:
       - name: Build module
         uses: Ananda-Aropa/android_module_actions@ksu_headless
         with:
-          id: native-bridge
-          name: libndk_translation
+          id: ${{ env.MODULE }}
+          name: ${{ env.MODULE_NAME }}
           version: ${{ env.VERSION }}
           version_code: ${{ env.VERSION_CODE }}
-          description: Android Native Bridge using Google's proprietary ndk_translation for Intel/AMD x86 CPUs
+          description: ${{ env.MODULE_DESCRIPTION }}
           # update_json: https://raw.githubusercontent.com/${{ env.REPO }}/${{ env.BRANCH }}/update.json
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          path: |
-            *.zip
+          name: ${{ env.MODULE }}.zip
+          path: ${{ env.MODULE }}.zip
 
   release:
     name: Release
